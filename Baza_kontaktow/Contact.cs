@@ -54,5 +54,14 @@
         {
             return $"{name} {surname} {phone} {date.ToShortDateString()}";
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Contact contact &&
+                   name == contact.name &&
+                   surname == contact.surname &&
+                   phone == contact.phone &&
+                   date.Equals(contact.date);
+        }
     }
 }

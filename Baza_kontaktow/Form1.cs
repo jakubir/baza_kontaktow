@@ -9,9 +9,13 @@ namespace Contacts
         List<Contact> contacts = new List<Contact>();
         ContactsFileStorage fileStorage = new ContactsFileStorage("kontakty.txt");
         SortType selectedSortType = SortType.Name;
-        Contact selectedContact = null;
+        Contact selectedContact;
 
-        private void viewContact(int index)
+        /// <summary>
+        /// Displaying contact data in labels and slActive
+        /// </summary>
+        /// <param name="index">Index in contacts list of contact to display</param>
+        private void ViewContact(int index)
         {
             if (index < 0 || index >= contacts.Count)
             {
@@ -29,8 +33,10 @@ namespace Contacts
             slActive.Text = selectedContact.ToSortTypeString(selectedSortType);
         }
 
-        // load data from contacts list to listBox lbContacts
-        private void refreshContactsList()
+        /// <summary>
+        /// Load data from contacts list to listBox lbContacts
+        /// </summary>
+        private void RefreshContactsList()
         {
             lbContacts.Items.Clear();
             contacts.ForEach(contact =>
@@ -40,7 +46,7 @@ namespace Contacts
             slNumberOfPeople.Text = contacts.Count.ToString();
         }
 
-        private void sortByName()
+        private void SortByName()
         {
             contacts.Sort(delegate (Contact c1, Contact c2)
             {
@@ -48,7 +54,7 @@ namespace Contacts
             });
         }
 
-        private void sortBySurname()
+        private void SortBySurname()
         {
             contacts.Sort(delegate (Contact c1, Contact c2)
             {
@@ -56,7 +62,7 @@ namespace Contacts
             });
         }
 
-        private void sortByDate()
+        private void SortByDate()
         {
             contacts.Sort(delegate (Contact c1, Contact c2)
             {
@@ -73,13 +79,13 @@ namespace Contacts
         {
             contacts = fileStorage.LoadFromFile();
 
-            sortByName();
+            SortByName();
 
             if (contacts.Count > 0)
             {
-                refreshContactsList();
+                RefreshContactsList();
                 pContactData.Visible = true;
-                viewContact(0);
+                ViewContact(0);
                 lbContacts.SelectedIndex = 0;
             }
         }
@@ -89,23 +95,7 @@ namespace Contacts
             pEditContact.Visible = true;
         }
 
-        private void dateInput(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-                return;
-            }
-
-            if (!char.IsControl(e.KeyChar) && (tbDate.Text.Length == 2 || tbDate.Text.Length == 5))
-            {
-                tbDate.Text += "/";
-                tbDate.SelectionStart = tbDate.Text.Length;
-                tbDate.ScrollToCaret();
-            }
-        }
-
-        private void phoneInput(object sender, KeyPressEventArgs e)
+        private void PhoneInput(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
@@ -121,8 +111,9 @@ namespace Contacts
             }
         }
 
-        private void editSubmit(object sender, EventArgs e)
+        private void AddContactSubmit(object sender, EventArgs e)
         {
+            // saving new contact to in-app list
             Contact contact = new Contact(
                 tbName.Text,
                 tbSurname.Text,
@@ -130,23 +121,52 @@ namespace Contacts
                 DateOnly.Parse(dtpDate.Text)
                 );
             contacts.Add(contact);
-            refreshContactsList();
+            selectedContact = contact;
+            
+            // sorting the list
+            switch (selectedSortType)
+            {
+                case SortType.Name:
+                    SortByName();
+                    break;
+                case SortType.Surname:
+                    SortBySurname();
+                    break;
+                case SortType.Date:
+                    SortByDate();
+                    break;
+            }
+
+            // finding the index of new item
+            int index = contacts.FindIndex(c => c.Equals(contact));
+
+            // updating ui
+            RefreshContactsList();
+            lbContacts.SelectedIndex = index;
+            ViewContact(index);
             pEditContact.Visible = false;
+            pContactData.Visible = true;
+
+            // clearing the form fields
+            tbName.Text = null;
+            tbSurname.Text = null;
+            dtpDate.Text = null;
+            tbPhone.Text = null;
         }
 
-        private void contactSelected(object sender, EventArgs e)
+        private void ContactSelected(object sender, EventArgs e)
         {
             int index = lbContacts.SelectedIndex;
 
-            viewContact(index);
+            ViewContact(index);
         }
 
-        private void saveToFile(object sender, EventArgs e)
+        private void SaveToFile(object sender, EventArgs e)
         {
             fileStorage.SaveToFile(contacts);
         }
 
-        private void byNameClick(object sender, EventArgs e)
+        private void ByNameClick(object sender, EventArgs e)
         {
             if (selectedSortType == SortType.Name) return;
 
@@ -156,12 +176,12 @@ namespace Contacts
             miSortBySurname.Checked = false;
             miSortByDate.Checked = false;
 
-            sortByName();
-            refreshContactsList();
+            SortByName();
+            RefreshContactsList();
             slActive.Text = selectedContact.ToSortTypeString(selectedSortType);
         }
 
-        private void bySurnameClick(object sender, EventArgs e)
+        private void BySurnameClick(object sender, EventArgs e)
         {
             if (selectedSortType == SortType.Surname) return;
 
@@ -171,12 +191,12 @@ namespace Contacts
             miSortBySurname.Checked = true;
             miSortByDate.Checked = false;
 
-            sortBySurname();
-            refreshContactsList();
+            SortBySurname();
+            RefreshContactsList();
             slActive.Text = selectedContact.ToSortTypeString(selectedSortType);
         }
 
-        private void byDateClick(object sender, EventArgs e)
+        private void ByDateClick(object sender, EventArgs e)
         {
             if (selectedSortType == SortType.Date) return;
 
@@ -186,14 +206,22 @@ namespace Contacts
             miSortBySurname.Checked = false;
             miSortByDate.Checked = true;
 
-            sortByDate();
-            refreshContactsList();
+            SortByDate();
+            RefreshContactsList();
             slActive.Text = selectedContact.ToSortTypeString(selectedSortType);
         }
 
-        private void exit(object sender, EventArgs e)
+        private void Exit(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void ClearFileStorage(object sender, EventArgs e)
+        {
+            fileStorage.ClearFileStorage();
+            contacts.Clear();
+            pContactData.Visible = false;
+            RefreshContactsList();
         }
     }
 }

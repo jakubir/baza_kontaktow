@@ -48,9 +48,9 @@ namespace Contacts
             }
         }
 
-        public List<Contact> ClearFileStorage()
+        public void ClearFileStorage()
         {
-            throw new NotImplementedException();
+            File.Delete(filename);
         }
     }
 }

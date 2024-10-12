@@ -74,7 +74,6 @@
             tbSurname = new TextBox();
             groupBox7 = new GroupBox();
             dtpDate = new DateTimePicker();
-            tbDate = new TextBox();
             groupBox8 = new GroupBox();
             tbPhone = new TextBox();
             statusStrip1.SuspendLayout();
@@ -148,6 +147,7 @@
             miNewContacts.Name = "miNewContacts";
             miNewContacts.Size = new Size(191, 22);
             miNewContacts.Text = "Nowa baza kontaktów";
+            miNewContacts.Click += ClearFileStorage;
             // 
             // toolStripSeparator3
             // 
@@ -183,7 +183,7 @@
             miSave.Name = "miSave";
             miSave.Size = new Size(191, 22);
             miSave.Text = "Zapisz";
-            miSave.Click += saveToFile;
+            miSave.Click += SaveToFile;
             // 
             // toolStripSeparator2
             // 
@@ -195,7 +195,7 @@
             miEnd.Name = "miEnd";
             miEnd.Size = new Size(191, 22);
             miEnd.Text = "Koniec";
-            miEnd.Click += exit;
+            miEnd.Click += Exit;
             // 
             // sortowanieToolStripMenuItem
             // 
@@ -209,23 +209,23 @@
             miSortByName.Checked = true;
             miSortByName.CheckState = CheckState.Checked;
             miSortByName.Name = "miSortByName";
-            miSortByName.Size = new Size(180, 22);
+            miSortByName.Size = new Size(153, 22);
             miSortByName.Text = "Imię";
-            miSortByName.Click += byNameClick;
+            miSortByName.Click += ByNameClick;
             // 
             // miSortBySurname
             // 
             miSortBySurname.Name = "miSortBySurname";
-            miSortBySurname.Size = new Size(180, 22);
+            miSortBySurname.Size = new Size(153, 22);
             miSortBySurname.Text = "Nazwisko";
-            miSortBySurname.Click += bySurnameClick;
+            miSortBySurname.Click += BySurnameClick;
             // 
             // miSortByDate
             // 
             miSortByDate.Name = "miSortByDate";
-            miSortByDate.Size = new Size(180, 22);
+            miSortByDate.Size = new Size(153, 22);
             miSortByDate.Text = "Datę urodzenia";
-            miSortByDate.Click += byDateClick;
+            miSortByDate.Click += ByDateClick;
             // 
             // miPomoc
             // 
@@ -359,7 +359,7 @@
             lbContacts.Name = "lbContacts";
             lbContacts.Size = new Size(264, 360);
             lbContacts.TabIndex = 0;
-            lbContacts.Click += contactSelected;
+            lbContacts.Click += ContactSelected;
             // 
             // panel2
             // 
@@ -408,7 +408,7 @@
             bEditSubmit.TabIndex = 12;
             bEditSubmit.Text = "Dodaj";
             bEditSubmit.UseVisualStyleBackColor = false;
-            bEditSubmit.Click += editSubmit;
+            bEditSubmit.Click += AddContactSubmit;
             // 
             // lTitle
             // 
@@ -461,7 +461,6 @@
             // groupBox7
             // 
             groupBox7.Controls.Add(dtpDate);
-            groupBox7.Controls.Add(tbDate);
             groupBox7.Location = new Point(33, 197);
             groupBox7.Name = "groupBox7";
             groupBox7.Size = new Size(241, 47);
@@ -476,18 +475,6 @@
             dtpDate.Name = "dtpDate";
             dtpDate.Size = new Size(229, 23);
             dtpDate.TabIndex = 15;
-            // 
-            // tbDate
-            // 
-            tbDate.BackColor = Color.FromArgb(173, 174, 188);
-            tbDate.BorderStyle = BorderStyle.None;
-            tbDate.Location = new Point(6, 19);
-            tbDate.MaxLength = 10;
-            tbDate.Name = "tbDate";
-            tbDate.PlaceholderText = "Podaj datę urodzenia...";
-            tbDate.Size = new Size(229, 16);
-            tbDate.TabIndex = 15;
-            tbDate.KeyPress += dateInput;
             // 
             // groupBox8
             // 
@@ -508,7 +495,7 @@
             tbPhone.PlaceholderText = "Podaj numer telefonu...";
             tbPhone.Size = new Size(229, 23);
             tbPhone.TabIndex = 15;
-            tbPhone.KeyPress += phoneInput;
+            tbPhone.KeyPress += PhoneInput;
             // 
             // Form1
             // 
@@ -548,7 +535,6 @@
             groupBox6.ResumeLayout(false);
             groupBox6.PerformLayout();
             groupBox7.ResumeLayout(false);
-            groupBox7.PerformLayout();
             groupBox8.ResumeLayout(false);
             groupBox8.PerformLayout();
             ResumeLayout(false);
@@ -603,7 +589,6 @@
         private Button bEditSubmit;
         private TextBox tbName;
         private TextBox tbSurname;
-        private TextBox tbDate;
         private TextBox tbPhone;
         private DateTimePicker dtpDate;
     }
