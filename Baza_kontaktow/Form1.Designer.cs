@@ -66,7 +66,7 @@
             panel2 = new Panel();
             label1 = new Label();
             pEditContact = new Panel();
-            bEditSubmit = new Button();
+            bSubmit = new Button();
             lTitle = new Label();
             groupBox5 = new GroupBox();
             tbName = new TextBox();
@@ -76,6 +76,11 @@
             dtpDate = new DateTimePicker();
             groupBox8 = new GroupBox();
             tbPhone = new TextBox();
+            pSearch = new Panel();
+            bSearch = new Button();
+            label3 = new Label();
+            groupBox9 = new GroupBox();
+            tbSearch = new TextBox();
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             pContactData.SuspendLayout();
@@ -89,6 +94,8 @@
             groupBox6.SuspendLayout();
             groupBox7.SuspendLayout();
             groupBox8.SuspendLayout();
+            pSearch.SuspendLayout();
+            groupBox9.SuspendLayout();
             SuspendLayout();
             // 
             // statusStrip1
@@ -166,12 +173,14 @@
             miDeleteContact.Name = "miDeleteContact";
             miDeleteContact.Size = new Size(191, 22);
             miDeleteContact.Text = "Usuń osobę";
+            miDeleteContact.Click += deleteContact;
             // 
             // miEditContact
             // 
             miEditContact.Name = "miEditContact";
             miEditContact.Size = new Size(191, 22);
             miEditContact.Text = "Edytuj osobę";
+            miEditContact.Click += editContact;
             // 
             // toolStripSeparator1
             // 
@@ -251,6 +260,7 @@
             miSearch.Name = "miSearch";
             miSearch.Size = new Size(125, 22);
             miSearch.Text = "Wyszukaj";
+            miSearch.Click += Search;
             // 
             // pContactData
             // 
@@ -387,7 +397,7 @@
             // pEditContact
             // 
             pEditContact.BackColor = Color.Transparent;
-            pEditContact.Controls.Add(bEditSubmit);
+            pEditContact.Controls.Add(bSubmit);
             pEditContact.Controls.Add(lTitle);
             pEditContact.Controls.Add(groupBox5);
             pEditContact.Controls.Add(groupBox6);
@@ -399,16 +409,16 @@
             pEditContact.TabIndex = 12;
             pEditContact.Visible = false;
             // 
-            // bEditSubmit
+            // bSubmit
             // 
-            bEditSubmit.BackColor = Color.Transparent;
-            bEditSubmit.Location = new Point(15, 337);
-            bEditSubmit.Name = "bEditSubmit";
-            bEditSubmit.Size = new Size(491, 36);
-            bEditSubmit.TabIndex = 12;
-            bEditSubmit.Text = "Dodaj";
-            bEditSubmit.UseVisualStyleBackColor = false;
-            bEditSubmit.Click += AddContactSubmit;
+            bSubmit.BackColor = Color.Transparent;
+            bSubmit.Location = new Point(15, 337);
+            bSubmit.Name = "bSubmit";
+            bSubmit.Size = new Size(491, 36);
+            bSubmit.TabIndex = 12;
+            bSubmit.Text = "Dodaj";
+            bSubmit.UseVisualStyleBackColor = false;
+            bSubmit.Click += AddContactSubmit;
             // 
             // lTitle
             // 
@@ -497,12 +507,64 @@
             tbPhone.TabIndex = 15;
             tbPhone.KeyPress += PhoneInput;
             // 
+            // pSearch
+            // 
+            pSearch.BackColor = Color.Transparent;
+            pSearch.Controls.Add(bSearch);
+            pSearch.Controls.Add(label3);
+            pSearch.Controls.Add(groupBox9);
+            pSearch.Location = new Point(282, 24);
+            pSearch.Name = "pSearch";
+            pSearch.Size = new Size(518, 390);
+            pSearch.TabIndex = 13;
+            pSearch.Visible = false;
+            // 
+            // bSearch
+            // 
+            bSearch.BackColor = Color.Transparent;
+            bSearch.Location = new Point(15, 337);
+            bSearch.Name = "bSearch";
+            bSearch.Size = new Size(491, 36);
+            bSearch.TabIndex = 12;
+            bSearch.Text = "Szukaj";
+            bSearch.UseVisualStyleBackColor = false;
+            bSearch.Click += SearchSubmit;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 15F);
+            label3.Location = new Point(33, 30);
+            label3.Name = "label3";
+            label3.Size = new Size(71, 28);
+            label3.TabIndex = 11;
+            label3.Text = "Szukaj:";
+            // 
+            // groupBox9
+            // 
+            groupBox9.Controls.Add(tbSearch);
+            groupBox9.Location = new Point(33, 71);
+            groupBox9.Name = "groupBox9";
+            groupBox9.Size = new Size(457, 47);
+            groupBox9.TabIndex = 4;
+            groupBox9.TabStop = false;
+            // 
+            // tbSearch
+            // 
+            tbSearch.BackColor = SystemColors.Window;
+            tbSearch.Location = new Point(6, 16);
+            tbSearch.Name = "tbSearch";
+            tbSearch.PlaceholderText = "Wyszukaj...";
+            tbSearch.Size = new Size(445, 23);
+            tbSearch.TabIndex = 13;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(173, 174, 188);
             ClientSize = new Size(800, 436);
+            Controls.Add(pSearch);
             Controls.Add(pEditContact);
             Controls.Add(panel2);
             Controls.Add(pContactData);
@@ -537,6 +599,10 @@
             groupBox7.ResumeLayout(false);
             groupBox8.ResumeLayout(false);
             groupBox8.PerformLayout();
+            pSearch.ResumeLayout(false);
+            pSearch.PerformLayout();
+            groupBox9.ResumeLayout(false);
+            groupBox9.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -586,10 +652,15 @@
         private GroupBox groupBox6;
         private GroupBox groupBox7;
         private GroupBox groupBox8;
-        private Button bEditSubmit;
+        private Button bSubmit;
         private TextBox tbName;
         private TextBox tbSurname;
         private TextBox tbPhone;
         private DateTimePicker dtpDate;
+        private Panel pSearch;
+        private Button bSearch;
+        private Label label3;
+        private GroupBox groupBox9;
+        private TextBox tbSearch;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ContactsApp;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace Contacts
 {
@@ -92,6 +93,10 @@ namespace Contacts
 
         private void AddContact(object sender, EventArgs e)
         {
+            selectedContact = null;
+
+            lTitle.Text = "Dodaj kontakt";
+            bSubmit.Text = "Dodaj";
             pEditContact.Visible = true;
         }
 
@@ -113,6 +118,9 @@ namespace Contacts
 
         private void AddContactSubmit(object sender, EventArgs e)
         {
+            if (selectedContact != null)
+                contacts.Remove(selectedContact);
+
             // saving new contact to in-app list
             Contact contact = new Contact(
                 tbName.Text,
@@ -122,7 +130,7 @@ namespace Contacts
                 );
             contacts.Add(contact);
             selectedContact = contact;
-            
+
             // sorting the list
             switch (selectedSortType)
             {
@@ -222,6 +230,69 @@ namespace Contacts
             contacts.Clear();
             pContactData.Visible = false;
             RefreshContactsList();
+        }
+
+        private void deleteContact(object sender, EventArgs e)
+        {
+            contacts.Remove(selectedContact);
+
+            // sorting the list
+            switch (selectedSortType)
+            {
+                case SortType.Name:
+                    SortByName();
+                    break;
+                case SortType.Surname:
+                    SortBySurname();
+                    break;
+                case SortType.Date:
+                    SortByDate();
+                    break;
+            }
+
+            // updating ui
+            selectedContact = contacts.First();
+            RefreshContactsList();
+            lbContacts.SelectedIndex = 0;
+            ViewContact(0);
+        }
+
+        private void editContact(object sender, EventArgs e)
+        {
+            if (selectedContact == null) return;
+
+            lTitle.Text = "Edytuj kontakt";
+            bSubmit.Text = "Zatwierdź zmiany";
+
+            pEditContact.Visible = true;
+            pContactData.Visible = false;
+
+            tbName.Text = selectedContact.name;
+            tbSurname.Text = selectedContact.surname;
+            tbPhone.Text = selectedContact.phone;
+            dtpDate.Text = selectedContact.date.ToShortDateString();
+        }
+
+        private void Search(object sender, EventArgs e)
+        {
+            pSearch.Visible = true;
+        }
+
+        private void SearchSubmit(object sender, EventArgs e)
+        {
+            string searchPhrase = tbSearch.Text;
+
+            var result = contacts
+                .Where(c => $"{c.name} {c.surname}".Contains(searchPhrase, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+
+            if (result != null)
+            {
+                int index = contacts.IndexOf(result);
+                lbContacts.SelectedIndex = index;
+                ViewContact(index);
+            }
+            pSearch.Visible = false;
         }
     }
 }
