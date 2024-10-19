@@ -118,16 +118,54 @@ namespace Contacts
 
         private void AddContactSubmit(object sender, EventArgs e)
         {
-            if (selectedContact != null)
-                contacts.Remove(selectedContact);
+            bool err = false;
+            gbName.ForeColor = Color.Black;
+            gbSurname.ForeColor = Color.Black;
+            gbPhone.ForeColor = Color.Black;
 
-            // saving new contact to in-app list
+            if (tbName.Text == "")
+            {
+                gbName.ForeColor = Color.Red;
+                err = true;
+            }
+            if (tbSurname.Text == "")
+            {
+                gbSurname.ForeColor = Color.Red;
+                err = true;
+            }
+            if (tbPhone.Text == "")
+            {
+                gbPhone.ForeColor = Color.Red;
+                err = true;
+            }
+
+            if (err)
+                return;
+
+
+            // getting the values out of the fields
             Contact contact = new Contact(
                 tbName.Text,
                 tbSurname.Text,
                 tbPhone.Text,
                 DateOnly.Parse(dtpDate.Text)
                 );
+
+            // clearing the form fields
+            tbName.Text = null;
+            tbSurname.Text = null;
+            dtpDate.Text = null;
+            tbPhone.Text = null;
+
+            // filter out the duplicates
+            if (contacts.Exists(c => c.Equals(contact)))
+                return;
+
+            // editing
+            if (selectedContact != null)
+                contacts.Remove(selectedContact);
+
+            // saving new contact to in-app list
             contacts.Add(contact);
             selectedContact = contact;
 
@@ -154,12 +192,6 @@ namespace Contacts
             ViewContact(index);
             pEditContact.Visible = false;
             pContactData.Visible = true;
-
-            // clearing the form fields
-            tbName.Text = null;
-            tbSurname.Text = null;
-            dtpDate.Text = null;
-            tbPhone.Text = null;
         }
 
         private void ContactSelected(object sender, EventArgs e)
@@ -293,6 +325,7 @@ namespace Contacts
                 ViewContact(index);
             }
             pSearch.Visible = false;
+            tbSearch.Text = null;
         }
     }
 }
