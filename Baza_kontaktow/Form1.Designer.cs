@@ -173,14 +173,14 @@
             miDeleteContact.Name = "miDeleteContact";
             miDeleteContact.Size = new Size(191, 22);
             miDeleteContact.Text = "Usuń osobę";
-            miDeleteContact.Click += deleteContact;
+            miDeleteContact.Click += DeleteContact;
             // 
             // miEditContact
             // 
             miEditContact.Name = "miEditContact";
             miEditContact.Size = new Size(191, 22);
             miEditContact.Text = "Edytuj osobę";
-            miEditContact.Click += editContact;
+            miEditContact.Click += EditContact;
             // 
             // toolStripSeparator1
             // 
@@ -246,19 +246,20 @@
             // miHelp
             // 
             miHelp.Name = "miHelp";
-            miHelp.Size = new Size(125, 22);
+            miHelp.Size = new Size(180, 22);
             miHelp.Text = "Pomoc";
+            miHelp.Click += OpenHelpFile;
             // 
             // miAuthor
             // 
             miAuthor.Name = "miAuthor";
-            miAuthor.Size = new Size(125, 22);
+            miAuthor.Size = new Size(180, 22);
             miAuthor.Text = "O autorze";
             // 
             // miSearch
             // 
             miSearch.Name = "miSearch";
-            miSearch.Size = new Size(125, 22);
+            miSearch.Size = new Size(180, 22);
             miSearch.Text = "Wyszukaj";
             miSearch.Click += Search;
             // 

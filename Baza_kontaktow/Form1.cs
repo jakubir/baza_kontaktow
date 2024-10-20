@@ -10,10 +10,11 @@ namespace Contacts
         List<Contact> contacts = new List<Contact>();
         ContactsFileStorage fileStorage = new ContactsFileStorage("kontakty.txt");
         SortType selectedSortType = SortType.Name;
+        string helpFilename = "";
         Contact selectedContact;
 
         /// <summary>
-        /// Displaying contact data in labels and slActive
+        /// Displays contact data in the UI labels and status line. Hides the contact data panel if the index is out of range.
         /// </summary>
         /// <param name="index">Index in contacts list of contact to display</param>
         private void ViewContact(int index)
@@ -35,7 +36,7 @@ namespace Contacts
         }
 
         /// <summary>
-        /// Load data from contacts list to listBox lbContacts
+        /// Loads data from the contacts list into the ListBox lbContacts. Updates the status line with the number of contacts.
         /// </summary>
         private void RefreshContactsList()
         {
@@ -47,6 +48,9 @@ namespace Contacts
             slNumberOfPeople.Text = contacts.Count.ToString();
         }
 
+        /// <summary>
+        /// Sorts the contacts list by name.
+        /// </summary>
         private void SortByName()
         {
             contacts.Sort(delegate (Contact c1, Contact c2)
@@ -55,6 +59,9 @@ namespace Contacts
             });
         }
 
+        /// <summary>
+        /// Sorts the contacts list by surname.
+        /// </summary>
         private void SortBySurname()
         {
             contacts.Sort(delegate (Contact c1, Contact c2)
@@ -63,6 +70,9 @@ namespace Contacts
             });
         }
 
+        /// <summary>
+        /// Sorts the contacts list by date.
+        /// </summary>
         private void SortByDate()
         {
             contacts.Sort(delegate (Contact c1, Contact c2)
@@ -76,6 +86,11 @@ namespace Contacts
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Loads contacts from file, sorts them by name, and refreshes the contact list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
             contacts = fileStorage.LoadFromFile();
@@ -91,6 +106,11 @@ namespace Contacts
             }
         }
 
+        /// <summary>
+        /// Prepares the form for adding a new contact.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddContact(object sender, EventArgs e)
         {
             selectedContact = null;
@@ -100,6 +120,11 @@ namespace Contacts
             pEditContact.Visible = true;
         }
 
+        /// <summary>
+        /// Handles input for the phone number field, ensuring only digits and control characters are allowed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PhoneInput(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
@@ -116,6 +141,11 @@ namespace Contacts
             }
         }
 
+        /// <summary>
+        /// Validates and adds a new contact to the list. Updates the UI and persists the contact list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddContactSubmit(object sender, EventArgs e)
         {
             bool err = false;
@@ -194,6 +224,11 @@ namespace Contacts
             pContactData.Visible = true;
         }
 
+        /// <summary>
+        /// Handles the selection of a contact from the list and displays the contact's details.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ContactSelected(object sender, EventArgs e)
         {
             int index = lbContacts.SelectedIndex;
@@ -201,11 +236,21 @@ namespace Contacts
             ViewContact(index);
         }
 
+        /// <summary>
+        /// Saves the contact list to the file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveToFile(object sender, EventArgs e)
         {
             fileStorage.SaveToFile(contacts);
         }
 
+        /// <summary>
+        /// Sets the sorting type to Name and sorts the contact list accordingly.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ByNameClick(object sender, EventArgs e)
         {
             if (selectedSortType == SortType.Name) return;
@@ -221,6 +266,11 @@ namespace Contacts
             slActive.Text = selectedContact.ToSortTypeString(selectedSortType);
         }
 
+        /// <summary>
+        /// Sets the sorting type to Surname and sorts the contact list accordingly.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BySurnameClick(object sender, EventArgs e)
         {
             if (selectedSortType == SortType.Surname) return;
@@ -236,6 +286,11 @@ namespace Contacts
             slActive.Text = selectedContact.ToSortTypeString(selectedSortType);
         }
 
+        /// <summary>
+        /// Sets the sorting type to Date and sorts the contact list accordingly.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ByDateClick(object sender, EventArgs e)
         {
             if (selectedSortType == SortType.Date) return;
@@ -251,11 +306,21 @@ namespace Contacts
             slActive.Text = selectedContact.ToSortTypeString(selectedSortType);
         }
 
+        /// <summary>
+        /// Closes the application.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Exit(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        /// <summary>
+        /// Clears the file storage and the contact list. Updates the UI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClearFileStorage(object sender, EventArgs e)
         {
             fileStorage.ClearFileStorage();
@@ -264,7 +329,12 @@ namespace Contacts
             RefreshContactsList();
         }
 
-        private void deleteContact(object sender, EventArgs e)
+        /// <summary>
+        /// Deletes the selected contact and updates the UI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteContact(object sender, EventArgs e)
         {
             contacts.Remove(selectedContact);
 
@@ -289,7 +359,12 @@ namespace Contacts
             ViewContact(0);
         }
 
-        private void editContact(object sender, EventArgs e)
+        /// <summary>
+        /// Prepares the form for editing the selected contact.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EditContact(object sender, EventArgs e)
         {
             if (selectedContact == null) return;
 
@@ -305,11 +380,21 @@ namespace Contacts
             dtpDate.Text = selectedContact.date.ToShortDateString();
         }
 
+        /// <summary>
+        /// Displays the search panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Search(object sender, EventArgs e)
         {
             pSearch.Visible = true;
         }
 
+        /// <summary>
+        /// Searches for a contact by name and surname. Updates the UI with the search result.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchSubmit(object sender, EventArgs e)
         {
             string searchPhrase = tbSearch.Text;
@@ -326,6 +411,22 @@ namespace Contacts
             }
             pSearch.Visible = false;
             tbSearch.Text = null;
+        }
+
+        /// <summary>
+        /// Start the process to open the help file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenHelpFile(object sender, EventArgs e)
+        {
+            if (File.Exists(helpFilename))
+            {
+                Process process = new Process();
+                process.StartInfo.FileName = helpFilename;
+                process.StartInfo.UseShellExecute = true;
+                process.Start();
+            }
         }
     }
 }
