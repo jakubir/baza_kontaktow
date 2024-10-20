@@ -10,7 +10,7 @@ namespace Contacts
         List<Contact> contacts = new List<Contact>();
         ContactsFileStorage fileStorage = new ContactsFileStorage("kontakty.txt");
         SortType selectedSortType = SortType.Name;
-        string helpFilename = "";
+        string helpFilename = "manual_pl.txt";
         Contact selectedContact;
 
         /// <summary>
