@@ -66,11 +66,6 @@
             panel2 = new Panel();
             label1 = new Label();
             pEditContact = new Panel();
-            pSearch = new Panel();
-            bSearch = new Button();
-            label3 = new Label();
-            groupBox9 = new GroupBox();
-            tbSearch = new TextBox();
             bSubmit = new Button();
             lTitle = new Label();
             gbName = new GroupBox();
@@ -81,6 +76,11 @@
             dtpDate = new DateTimePicker();
             gbPhone = new GroupBox();
             tbPhone = new TextBox();
+            pSearch = new Panel();
+            bSearch = new Button();
+            label3 = new Label();
+            groupBox9 = new GroupBox();
+            tbSearch = new TextBox();
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             pContactData.SuspendLayout();
@@ -90,12 +90,12 @@
             groupBox1.SuspendLayout();
             panel2.SuspendLayout();
             pEditContact.SuspendLayout();
-            pSearch.SuspendLayout();
-            groupBox9.SuspendLayout();
             gbName.SuspendLayout();
             gbSurname.SuspendLayout();
             gbDate.SuspendLayout();
             gbPhone.SuspendLayout();
+            pSearch.SuspendLayout();
+            groupBox9.SuspendLayout();
             SuspendLayout();
             // 
             // statusStrip1
@@ -246,20 +246,21 @@
             // miHelp
             // 
             miHelp.Name = "miHelp";
-            miHelp.Size = new Size(180, 22);
+            miHelp.Size = new Size(125, 22);
             miHelp.Text = "Pomoc";
             miHelp.Click += OpenHelpFile;
             // 
             // miAuthor
             // 
             miAuthor.Name = "miAuthor";
-            miAuthor.Size = new Size(180, 22);
+            miAuthor.Size = new Size(125, 22);
             miAuthor.Text = "O autorze";
+            miAuthor.Click += ShowAuthorInfo;
             // 
             // miSearch
             // 
             miSearch.Name = "miSearch";
-            miSearch.Size = new Size(180, 22);
+            miSearch.Size = new Size(125, 22);
             miSearch.Text = "Wyszukaj";
             miSearch.Click += Search;
             // 
@@ -370,7 +371,7 @@
             lbContacts.Name = "lbContacts";
             lbContacts.Size = new Size(264, 360);
             lbContacts.TabIndex = 0;
-            lbContacts.Click += ContactSelected;
+            lbContacts.Click += SelectContact;
             // 
             // panel2
             // 
@@ -398,7 +399,6 @@
             // pEditContact
             // 
             pEditContact.BackColor = Color.Transparent;
-            pEditContact.Controls.Add(pSearch);
             pEditContact.Controls.Add(bSubmit);
             pEditContact.Controls.Add(lTitle);
             pEditContact.Controls.Add(gbName);
@@ -410,58 +410,6 @@
             pEditContact.Size = new Size(518, 390);
             pEditContact.TabIndex = 12;
             pEditContact.Visible = false;
-            // 
-            // pSearch
-            // 
-            pSearch.BackColor = Color.Transparent;
-            pSearch.Controls.Add(bSearch);
-            pSearch.Controls.Add(label3);
-            pSearch.Controls.Add(groupBox9);
-            pSearch.Location = new Point(0, 0);
-            pSearch.Name = "pSearch";
-            pSearch.Size = new Size(518, 390);
-            pSearch.TabIndex = 13;
-            pSearch.Visible = false;
-            // 
-            // bSearch
-            // 
-            bSearch.BackColor = Color.Transparent;
-            bSearch.Location = new Point(15, 337);
-            bSearch.Name = "bSearch";
-            bSearch.Size = new Size(491, 36);
-            bSearch.TabIndex = 12;
-            bSearch.Text = "Szukaj";
-            bSearch.UseVisualStyleBackColor = false;
-            bSearch.Click += SearchSubmit;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 15F);
-            label3.Location = new Point(33, 30);
-            label3.Name = "label3";
-            label3.Size = new Size(71, 28);
-            label3.TabIndex = 11;
-            label3.Text = "Szukaj:";
-            // 
-            // groupBox9
-            // 
-            groupBox9.BackColor = Color.Transparent;
-            groupBox9.Controls.Add(tbSearch);
-            groupBox9.Location = new Point(33, 71);
-            groupBox9.Name = "groupBox9";
-            groupBox9.Size = new Size(457, 47);
-            groupBox9.TabIndex = 4;
-            groupBox9.TabStop = false;
-            // 
-            // tbSearch
-            // 
-            tbSearch.BackColor = SystemColors.Window;
-            tbSearch.Location = new Point(6, 16);
-            tbSearch.Name = "tbSearch";
-            tbSearch.PlaceholderText = "Wyszukaj...";
-            tbSearch.Size = new Size(445, 23);
-            tbSearch.TabIndex = 13;
             // 
             // bSubmit
             // 
@@ -555,12 +503,64 @@
             // 
             tbPhone.BackColor = SystemColors.Window;
             tbPhone.Location = new Point(6, 16);
-            tbPhone.MaxLength = 11;
+            tbPhone.MaxLength = 9;
             tbPhone.Name = "tbPhone";
             tbPhone.PlaceholderText = "Podaj numer telefonu...";
             tbPhone.Size = new Size(229, 23);
             tbPhone.TabIndex = 15;
             tbPhone.KeyPress += PhoneInput;
+            // 
+            // pSearch
+            // 
+            pSearch.BackColor = Color.Transparent;
+            pSearch.Controls.Add(bSearch);
+            pSearch.Controls.Add(label3);
+            pSearch.Controls.Add(groupBox9);
+            pSearch.Location = new Point(282, 24);
+            pSearch.Name = "pSearch";
+            pSearch.Size = new Size(518, 390);
+            pSearch.TabIndex = 13;
+            pSearch.Visible = false;
+            // 
+            // bSearch
+            // 
+            bSearch.BackColor = Color.Transparent;
+            bSearch.Location = new Point(15, 337);
+            bSearch.Name = "bSearch";
+            bSearch.Size = new Size(491, 36);
+            bSearch.TabIndex = 12;
+            bSearch.Text = "Szukaj";
+            bSearch.UseVisualStyleBackColor = false;
+            bSearch.Click += SearchSubmit;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 15F);
+            label3.Location = new Point(33, 30);
+            label3.Name = "label3";
+            label3.Size = new Size(71, 28);
+            label3.TabIndex = 11;
+            label3.Text = "Szukaj:";
+            // 
+            // groupBox9
+            // 
+            groupBox9.BackColor = Color.Transparent;
+            groupBox9.Controls.Add(tbSearch);
+            groupBox9.Location = new Point(33, 71);
+            groupBox9.Name = "groupBox9";
+            groupBox9.Size = new Size(457, 47);
+            groupBox9.TabIndex = 4;
+            groupBox9.TabStop = false;
+            // 
+            // tbSearch
+            // 
+            tbSearch.BackColor = SystemColors.Window;
+            tbSearch.Location = new Point(6, 16);
+            tbSearch.Name = "tbSearch";
+            tbSearch.PlaceholderText = "Wyszukaj...";
+            tbSearch.Size = new Size(445, 23);
+            tbSearch.TabIndex = 13;
             // 
             // Form1
             // 
@@ -568,13 +568,17 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(173, 174, 188);
             ClientSize = new Size(800, 436);
+            Controls.Add(pSearch);
             Controls.Add(pEditContact);
             Controls.Add(panel2);
             Controls.Add(pContactData);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
             ForeColor = SystemColors.ControlText;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MainMenuStrip = menuStrip1;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Form1";
             Text = "Kontakty Jakub I.";
             Load += Form1_Load;
@@ -595,10 +599,6 @@
             panel2.ResumeLayout(false);
             pEditContact.ResumeLayout(false);
             pEditContact.PerformLayout();
-            pSearch.ResumeLayout(false);
-            pSearch.PerformLayout();
-            groupBox9.ResumeLayout(false);
-            groupBox9.PerformLayout();
             gbName.ResumeLayout(false);
             gbName.PerformLayout();
             gbSurname.ResumeLayout(false);
@@ -606,6 +606,10 @@
             gbDate.ResumeLayout(false);
             gbPhone.ResumeLayout(false);
             gbPhone.PerformLayout();
+            pSearch.ResumeLayout(false);
+            pSearch.PerformLayout();
+            groupBox9.ResumeLayout(false);
+            groupBox9.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }

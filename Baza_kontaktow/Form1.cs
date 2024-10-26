@@ -1,6 +1,7 @@
 ﻿using ContactsApp;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 
 namespace Contacts
@@ -55,7 +56,7 @@ namespace Contacts
         {
             contacts.Sort(delegate (Contact c1, Contact c2)
             {
-                return c1.name.CompareTo(c2.name);
+                return string.Compare(c1.name, c2.name, new CultureInfo("pl-PL"), CompareOptions.IgnoreCase);
             });
         }
 
@@ -66,7 +67,8 @@ namespace Contacts
         {
             contacts.Sort(delegate (Contact c1, Contact c2)
             {
-                return c1.surname.CompareTo(c2.surname);
+                return string.Compare(c1.surname, c2.surname, new CultureInfo("pl-PL"), CompareOptions.IgnoreCase);
+                //return string.Compare(c1.surname, c2.surname, CultureInfo.CurrentCulture, CompareOptions.None);
             });
         }
 
@@ -77,7 +79,26 @@ namespace Contacts
         {
             contacts.Sort(delegate (Contact c1, Contact c2)
             {
-                return c1.date.CompareTo(c2.date);
+                if (c1.date.Month > c2.date.Month)
+                    return 1;
+                else if (c1.date.Month < c2.date.Month) 
+                    return -1;
+                else
+                {
+                    if (c1.date.Day > c2.date.Day)
+                        return 1;
+                    else if (c1.date.Day < c2.date.Day)
+                        return -1;
+                    else
+                    {
+                        if (c1.date.Year > c2.date.Year)
+                            return 1;
+                        else if (c1.date.Year < c2.date.Year)
+                            return -1;
+                        else
+                            return 0;
+                    }
+                }
             });
         }
 
@@ -114,10 +135,19 @@ namespace Contacts
         private void AddContact(object sender, EventArgs e)
         {
             selectedContact = null;
+            lbContacts.ClearSelected();
+
+            pContactData.Visible = false;
+            pEditContact.Visible = true;
+            pSearch.Visible = false;
+
+            tbName.Text = null;
+            tbSurname.Text = null;
+            dtpDate.Text = null;
+            tbPhone.Text = null;
 
             lTitle.Text = "Dodaj kontakt";
             bSubmit.Text = "Dodaj";
-            pEditContact.Visible = true;
         }
 
         /// <summary>
@@ -131,13 +161,6 @@ namespace Contacts
             {
                 e.Handled = true;
                 return;
-            }
-
-            if (!char.IsControl(e.KeyChar) && (tbPhone.Text.Length == 3 || tbPhone.Text.Length == 7))
-            {
-                tbPhone.Text += "-";
-                tbPhone.SelectionStart = tbPhone.Text.Length;
-                tbPhone.ScrollToCaret();
             }
         }
 
@@ -163,7 +186,7 @@ namespace Contacts
                 gbSurname.ForeColor = Color.Red;
                 err = true;
             }
-            if (tbPhone.Text == "")
+            if (tbPhone.Text == "" || tbPhone.Text.Length != 9)
             {
                 gbPhone.ForeColor = Color.Red;
                 err = true;
@@ -229,9 +252,18 @@ namespace Contacts
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ContactSelected(object sender, EventArgs e)
+        private void SelectContact(object sender, EventArgs e)
         {
             int index = lbContacts.SelectedIndex;
+
+            pContactData.Visible = true;
+            pEditContact.Visible = false;
+            pSearch.Visible = false;
+
+            tbName.Text = null;
+            tbSurname.Text = null;
+            dtpDate.Text = null;
+            tbPhone.Text = null;
 
             ViewContact(index);
         }
@@ -323,9 +355,21 @@ namespace Contacts
         /// <param name="e"></param>
         private void ClearFileStorage(object sender, EventArgs e)
         {
+            var result = MessageBox.Show("Czy na pewno chcesz usunąć wszystkie kontakty?", "Czyszczenie bazy kontaktów", MessageBoxButtons.OKCancel);
+
+            if (result == DialogResult.No) return;
+
             fileStorage.ClearFileStorage();
             contacts.Clear();
             pContactData.Visible = false;
+            pEditContact.Visible = false;
+            pSearch.Visible = false;
+
+            tbName.Text = null;
+            tbSurname.Text = null;
+            dtpDate.Text = null;
+            tbPhone.Text = null;
+
             RefreshContactsList();
         }
 
@@ -336,6 +380,10 @@ namespace Contacts
         /// <param name="e"></param>
         private void DeleteContact(object sender, EventArgs e)
         {
+            var result = MessageBox.Show($"Czy na pewno chcesz usunąć kontakt:\n{selectedContact.ToString()}?", "Usuwanie kontaktu", MessageBoxButtons.OKCancel);
+
+            if (result == DialogResult.No) return;
+
             contacts.Remove(selectedContact);
 
             // sorting the list
@@ -371,8 +419,9 @@ namespace Contacts
             lTitle.Text = "Edytuj kontakt";
             bSubmit.Text = "Zatwierdź zmiany";
 
-            pEditContact.Visible = true;
             pContactData.Visible = false;
+            pEditContact.Visible = true;
+            pSearch.Visible = false;
 
             tbName.Text = selectedContact.name;
             tbSurname.Text = selectedContact.surname;
@@ -387,7 +436,14 @@ namespace Contacts
         /// <param name="e"></param>
         private void Search(object sender, EventArgs e)
         {
+            pContactData.Visible = false;
+            pEditContact.Visible = false;
             pSearch.Visible = true;
+
+            tbName.Text = null;
+            tbSurname.Text = null;
+            dtpDate.Text = null;
+            tbPhone.Text = null;
         }
 
         /// <summary>
@@ -408,7 +464,14 @@ namespace Contacts
                 int index = contacts.IndexOf(result);
                 lbContacts.SelectedIndex = index;
                 ViewContact(index);
+            } 
+            else if (selectedContact == null)
+            {
+                lbContacts.SelectedIndex = 0;
+                ViewContact(0);
             }
+            pContactData.Visible = true;
+            pEditContact.Visible = false;
             pSearch.Visible = false;
             tbSearch.Text = null;
         }
@@ -427,6 +490,16 @@ namespace Contacts
                 process.StartInfo.UseShellExecute = true;
                 process.Start();
             }
+        }
+
+        /// <summary>
+        /// Shows the author info in a MessageBox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowAuthorInfo(object sender, EventArgs e)
+        {
+            MessageBox.Show("Autorem aplikacji jest Jakub Irla");
         }
     }
 }
