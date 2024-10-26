@@ -73,6 +73,14 @@ Baza_kontaktow/bin/publish
 - Kliknij przycisk "Nowa baza kontaktów".
 - Potwierdź wyczyszczenie bazy kontaktów w oknie komunikatu za pomocą przycisku "OK".
 
+### Pomoc
+- Kliknij przycisk "Opcje".
+- Kliknij przycisk "Pomoc", aby otworzyć plik z informacjami o korzystaniu z programu.
+ 
+### O autorze
+- Kliknij przycisk "Opcje".
+- Kliknij przycisk "Autor", aby uzyskać informacje o autorze.
+
 ### Zamknięcie aplikacji
 - Kliknij przycisk "Kontakty".
 - Kliknij przycisk "Koniec", aby zakończyć działanie aplikacji.
