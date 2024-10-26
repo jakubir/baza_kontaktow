@@ -23,7 +23,7 @@ Baza Kontaktów to prosta aplikacja do zarządzania kontaktami, napisana w C#. P
 2. Otwórz plik wykonywalny z:
 ```
 
-Baza_kontaktow/bin/publish
+Baza_kontaktow/bin/Baza kontaktów
 
 ```
 
