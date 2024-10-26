@@ -35,7 +35,7 @@ Baza_kontaktow/bin/publish
 ### Dodaj kontakt:
 - Kliknij przycisk "Kontakty".
 - Kliknij przycisk "Dodaj kontakt".
-- Wypełnij dane kontaktowe (Imię, Nazwisko, Telefon, Data).
+- Wypełnij dane kontaktowe (Imię, Nazwisko, Telefon (w polskim formacie), Data).
 - Kliknij "Dodaj", aby zapisać nowy kontakt.
 - Gdy kontakt o identycznych danych już istenieje, aplikacja automatycznie usunie ten duplikat.
 
