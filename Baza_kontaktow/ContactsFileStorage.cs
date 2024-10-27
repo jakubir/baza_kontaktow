@@ -25,7 +25,8 @@ namespace Contacts
             foreach (string line in File.ReadAllLines(filename))
             {
                 string[] contactData = line.Split(" ");
-                if (contactData.Length != 4)
+                DateOnly result;
+                if (contactData.Length != 4 || !DateOnly.TryParse(contactData[3], out result))
                     continue;
                 Contact contact = new Contact(
                     contactData[0], 
@@ -41,7 +42,9 @@ namespace Contacts
 
         public void SaveToFile(List<Contact> contacts)
         {
-            File.Delete(filename);
+            if (File.Exists(filename))
+                File.Delete(filename);
+
             foreach (Contact contact in contacts)
             {
                 File.AppendAllText(filename, contact.ToString() + "\n");

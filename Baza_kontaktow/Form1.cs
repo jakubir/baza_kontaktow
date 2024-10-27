@@ -401,10 +401,20 @@ namespace Contacts
             }
 
             // updating ui
-            selectedContact = contacts.First();
             RefreshContactsList();
-            lbContacts.SelectedIndex = 0;
-            ViewContact(0);
+            if (contacts.Count == 0)
+            {
+                lbContacts.ClearSelected();
+                pContactData.Visible = false;
+                pEditContact.Visible = false;
+                pSearch.Visible = false;
+            }
+            else
+            {
+                selectedContact = contacts.First();
+                lbContacts.SelectedIndex = 0;
+                ViewContact(0);
+            }
         }
 
         /// <summary>
