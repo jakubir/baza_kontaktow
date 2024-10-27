@@ -25,8 +25,9 @@ namespace Contacts
             foreach (string line in File.ReadAllLines(filename))
             {
                 string[] contactData = line.Split(" ");
-                DateOnly result;
-                if (contactData.Length != 4 || !DateOnly.TryParse(contactData[3], out result))
+                DateOnly do_result;
+                int i_result;
+                if (contactData.Length != 4 || !DateOnly.TryParse(contactData[3], out do_result) || int.TryParse(contactData[2], out i_result) || contactData[2].Length != 9)
                     continue;
                 Contact contact = new Contact(
                     contactData[0], 

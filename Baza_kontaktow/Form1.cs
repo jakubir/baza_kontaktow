@@ -210,34 +210,36 @@ namespace Contacts
             dtpDate.Text = null;
             tbPhone.Text = null;
 
+            int index = 0;
+
             // filter out the duplicates
-            if (contacts.Exists(c => c.Equals(contact)))
-                return;
-
-            // editing
-            if (selectedContact != null)
-                contacts.Remove(selectedContact);
-
-            // saving new contact to in-app list
-            contacts.Add(contact);
-            selectedContact = contact;
-
-            // sorting the list
-            switch (selectedSortType)
+            if (!contacts.Exists(c => c.Equals(contact)))
             {
-                case SortType.Name:
-                    SortByName();
-                    break;
-                case SortType.Surname:
-                    SortBySurname();
-                    break;
-                case SortType.Date:
-                    SortByDate();
-                    break;
-            }
+                // editing
+                if (selectedContact != null)
+                    contacts.Remove(selectedContact);
 
+                // saving new contact to in-app list
+                contacts.Add(contact);
+                selectedContact = contact;
+
+                // sorting the list
+                switch (selectedSortType)
+                {
+                    case SortType.Name:
+                        SortByName();
+                        break;
+                    case SortType.Surname:
+                        SortBySurname();
+                        break;
+                    case SortType.Date:
+                        SortByDate();
+                        break;
+                }
+
+            }
             // finding the index of new item
-            int index = contacts.FindIndex(c => c.Equals(contact));
+            index = contacts.FindIndex(c => c.Equals(contact));
 
             // updating ui
             RefreshContactsList();
@@ -285,7 +287,7 @@ namespace Contacts
         /// <param name="e"></param>
         private void ByNameClick(object sender, EventArgs e)
         {
-            if (selectedSortType == SortType.Name) return;
+            if (selectedSortType == SortType.Name || selectedContact == null) return;
 
             selectedSortType = SortType.Name;
 
@@ -305,7 +307,7 @@ namespace Contacts
         /// <param name="e"></param>
         private void BySurnameClick(object sender, EventArgs e)
         {
-            if (selectedSortType == SortType.Surname) return;
+            if (selectedSortType == SortType.Surname || selectedContact == null) return;
 
             selectedSortType = SortType.Surname;
 
@@ -325,7 +327,7 @@ namespace Contacts
         /// <param name="e"></param>
         private void ByDateClick(object sender, EventArgs e)
         {
-            if (selectedSortType == SortType.Date) return;
+            if (selectedSortType == SortType.Date || selectedContact == null) return;
 
             selectedSortType = SortType.Date;
 
