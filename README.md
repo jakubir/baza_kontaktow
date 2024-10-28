@@ -39,6 +39,9 @@ Baza_kontaktow/bin/Baza kontaktów
 - Kliknij "Dodaj", aby zapisać nowy kontakt.
 - Gdy kontakt o identycznych danych już istenieje, aplikacja automatycznie usunie ten duplikat.
 
+### Wyświetl informacje o kontakcie:
+- Wybierz kontakt z listy po prawej stronie, aby wyświetlić dane kontaktu (Imię, Nazwisko, Telefon, Data).
+
 ### Edytuj kontakt:
 - Wybierz kontakt z listy.
 - Kliknij przycisk "Kontakty".
