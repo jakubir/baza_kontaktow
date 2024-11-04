@@ -359,20 +359,23 @@ namespace Contacts
         {
             var result = MessageBox.Show("Czy na pewno chcesz usunąć wszystkie kontakty?", "Czyszczenie bazy kontaktów", MessageBoxButtons.OKCancel);
 
-            if (result == DialogResult.No) return;
-
-            fileStorage.ClearFileStorage();
-            contacts.Clear();
-            pContactData.Visible = false;
-            pEditContact.Visible = false;
-            pSearch.Visible = false;
-
-            tbName.Text = null;
-            tbSurname.Text = null;
-            dtpDate.Text = null;
-            tbPhone.Text = null;
-
-            RefreshContactsList();
+            if (result == DialogResult.No) 
+                return;
+            else 
+            {
+                fileStorage.ClearFileStorage();
+                contacts.Clear();
+                pContactData.Visible = false;
+                pEditContact.Visible = false;
+                pSearch.Visible = false;
+    
+                tbName.Text = null;
+                tbSurname.Text = null;
+                dtpDate.Text = null;
+                tbPhone.Text = null;
+    
+                RefreshContactsList();
+            }
         }
 
         /// <summary>
@@ -384,38 +387,41 @@ namespace Contacts
         {
             var result = MessageBox.Show($"Czy na pewno chcesz usunąć kontakt:\n{selectedContact.ToString()}?", "Usuwanie kontaktu", MessageBoxButtons.OKCancel);
 
-            if (result == DialogResult.No) return;
-
-            contacts.Remove(selectedContact);
-
-            // sorting the list
-            switch (selectedSortType)
+            if (result == DialogResult.No) 
+                return;
+            else 
             {
-                case SortType.Name:
-                    SortByName();
-                    break;
-                case SortType.Surname:
-                    SortBySurname();
-                    break;
-                case SortType.Date:
-                    SortByDate();
-                    break;
-            }
-
-            // updating ui
-            RefreshContactsList();
-            if (contacts.Count == 0)
-            {
-                lbContacts.ClearSelected();
-                pContactData.Visible = false;
-                pEditContact.Visible = false;
-                pSearch.Visible = false;
-            }
-            else
-            {
-                selectedContact = contacts.First();
-                lbContacts.SelectedIndex = 0;
-                ViewContact(0);
+                contacts.Remove(selectedContact);
+    
+                // sorting the list
+                switch (selectedSortType)
+                {
+                    case SortType.Name:
+                        SortByName();
+                        break;
+                    case SortType.Surname:
+                        SortBySurname();
+                        break;
+                    case SortType.Date:
+                        SortByDate();
+                        break;
+                }
+    
+                // updating ui
+                RefreshContactsList();
+                if (contacts.Count == 0)
+                {
+                    lbContacts.ClearSelected();
+                    pContactData.Visible = false;
+                    pEditContact.Visible = false;
+                    pSearch.Visible = false;
+                }
+                else
+                {
+                    selectedContact = contacts.First();
+                    lbContacts.SelectedIndex = 0;
+                    ViewContact(0);
+                }
             }
         }
 
